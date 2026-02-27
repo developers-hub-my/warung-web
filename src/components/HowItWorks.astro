@@ -1,0 +1,44 @@
+---
+const steps = [
+  {
+    number: '1',
+    title: 'Daftar',
+    description: 'Cipta akaun percuma dalam masa kurang 2 minit. Tiada kad kredit diperlukan.',
+  },
+  {
+    number: '2',
+    title: 'Tambah Produk',
+    description: 'Masukkan senarai menu atau produk anda. Susun mengikut kategori dan tetapkan harga.',
+  },
+  {
+    number: '3',
+    title: 'Mula Jual',
+    description: 'Warung anda sedia untuk beroperasi. Terima pesanan dan bayaran dengan mudah.',
+  },
+];
+---
+
+<section class="py-16 sm:py-24 bg-amber-50">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <h2 class="text-3xl sm:text-4xl font-bold text-neutral-900">
+        Mula dalam 3 langkah mudah
+      </h2>
+      <p class="mt-4 text-lg text-neutral-600">
+        Tiada keperluan teknikal. Sesiapa sahaja boleh bermula.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      {steps.map((step) => (
+        <div class="text-center">
+          <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-amber-500 text-white text-2xl font-bold shadow-lg shadow-amber-500/25">
+            {step.number}
+          </div>
+          <h3 class="text-xl font-bold text-neutral-900 mb-2">{step.title}</h3>
+          <p class="text-neutral-600">{step.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

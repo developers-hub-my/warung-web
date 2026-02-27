@@ -1,0 +1,37 @@
+---
+import PosDemo from './PosDemo.astro';
+---
+
+<section class="pt-28 pb-16 sm:pt-36 sm:pb-24 bg-gradient-to-b from-amber-50 to-white">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-neutral-900 leading-tight">
+          Juruwang digital untuk
+          <span class="text-amber-500">warung</span> anda
+        </h1>
+        <p class="mt-6 text-lg text-neutral-600 max-w-lg">
+          Sistem POS moden yang mudah digunakan untuk gerai, kedai makan dan café kecil.
+          Berfungsi tanpa internet, boleh dipasang di telefon — percuma untuk bermula.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+          <a
+            href="https://warung.pro/register"
+            class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-white bg-amber-500 hover:bg-amber-600 rounded-xl shadow-lg shadow-amber-500/25 transition-all"
+          >
+            Daftar Percuma
+          </a>
+          <a
+            href="https://warung.pro"
+            class="inline-flex items-center justify-center px-6 py-3 text-base font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 rounded-xl transition-all"
+          >
+            Lihat Demo
+          </a>
+        </div>
+      </div>
+      <div class="flex justify-center lg:justify-end">
+        <PosDemo />
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Figtree", system-ui, sans-serif;
+  --color-primary: var(--color-amber-400);
+  --color-primary-dark: var(--color-amber-500);
+  --color-primary-darker: var(--color-amber-600);
+  --color-brand-brown: #92400E;
+  --color-brand-gradient-start: #F59E0B;
+  --color-brand-gradient-end: #B45309;
+}

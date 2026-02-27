@@ -1,0 +1,126 @@
+---
+const plans = [
+  {
+    name: 'Percuma',
+    price: 'RM 0',
+    period: '/bulan',
+    description: 'Untuk warung yang baru bermula.',
+    features: [
+      '1 pengguna',
+      'Sehingga 50 produk',
+      'Laporan asas',
+      'Berfungsi offline',
+      'Pasang di telefon (PWA)',
+    ],
+    cta: 'Mula Percuma',
+    href: 'https://warung.pro/register',
+    highlighted: false,
+  },
+  {
+    name: 'Pro',
+    price: 'RM 29',
+    period: '/bulan',
+    description: 'Untuk warung yang sedang berkembang.',
+    features: [
+      'Sehingga 3 pengguna',
+      'Produk tanpa had',
+      'Laporan terperinci',
+      'Berfungsi offline',
+      'Pelbagai kaedah bayaran',
+      'Sokongan keutamaan',
+    ],
+    cta: 'Cuba 14 Hari Percuma',
+    href: 'https://warung.pro/register?plan=pro',
+    highlighted: true,
+  },
+  {
+    name: 'Bisnes',
+    price: 'RM 79',
+    period: '/bulan',
+    description: 'Untuk perniagaan pelbagai cawangan.',
+    features: [
+      'Pengguna tanpa had',
+      'Produk tanpa had',
+      'Laporan lanjutan & eksport',
+      'Berfungsi offline',
+      'Pelbagai kaedah bayaran',
+      'Sokongan dedikasi',
+      'Pengurusan cawangan',
+    ],
+    cta: 'Hubungi Kami',
+    href: '#hubungi',
+    highlighted: false,
+  },
+];
+---
+
+<section id="harga" class="py-16 sm:py-24 bg-white">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <h2 class="text-3xl sm:text-4xl font-bold text-neutral-900">
+        Harga berpatutan untuk semua
+      </h2>
+      <p class="mt-4 text-lg text-neutral-600">
+        Mula percuma, naik taraf bila perniagaan anda berkembang.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      {plans.map((plan) => (
+        <div
+          class:list={[
+            'rounded-2xl p-8 flex flex-col',
+            plan.highlighted
+              ? 'bg-amber-500 text-white shadow-2xl shadow-amber-500/25 ring-2 ring-amber-500 scale-105'
+              : 'bg-white border border-neutral-200',
+          ]}
+        >
+          <h3 class:list={[
+            'text-lg font-bold',
+            plan.highlighted ? 'text-white' : 'text-neutral-900',
+          ]}>{plan.name}</h3>
+          <div class="mt-4 flex items-baseline gap-1">
+            <span class:list={[
+              'text-4xl font-extrabold',
+              plan.highlighted ? 'text-white' : 'text-neutral-900',
+            ]}>{plan.price}</span>
+            <span class:list={[
+              'text-sm',
+              plan.highlighted ? 'text-amber-100' : 'text-neutral-500',
+            ]}>{plan.period}</span>
+          </div>
+          <p class:list={[
+            'mt-2 text-sm',
+            plan.highlighted ? 'text-amber-100' : 'text-neutral-600',
+          ]}>{plan.description}</p>
+
+          <ul class="mt-6 space-y-3 flex-1">
+            {plan.features.map((feature) => (
+              <li class="flex items-start gap-2 text-sm">
+                <svg class:list={[
+                  'w-5 h-5 shrink-0 mt-0.5',
+                  plan.highlighted ? 'text-amber-100' : 'text-amber-500',
+                ]} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                <span>{feature}</span>
+              </li>
+            ))}
+          </ul>
+
+          <a
+            href={plan.href}
+            class:list={[
+              'mt-8 block text-center px-6 py-3 text-sm font-semibold rounded-xl transition-all',
+              plan.highlighted
+                ? 'bg-white text-amber-600 hover:bg-amber-50'
+                : 'bg-amber-500 text-white hover:bg-amber-600',
+            ]}
+          >
+            {plan.cta}
+          </a>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
