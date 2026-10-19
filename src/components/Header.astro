@@ -1,73 +1,111 @@
 ---
 import { signupUrl, loginUrl } from '../signup';
 const navLinks = [
-  { href: '/#ciri-ciri', label: 'Ciri-ciri' },
+  { href: '/#ciri', label: 'Ciri-ciri' },
+  { href: '/#cara', label: 'Cara Guna' },
   { href: '/#harga', label: 'Harga' },
+  { href: '/#soalan', label: 'Soalan Lazim' },
   { href: '/panduan/', label: 'Panduan' },
-  { href: '#hubungi', label: 'Hubungi' },
 ];
+const focus = 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink';
 ---
 
-<header class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-neutral-100">
-  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
-    <a href="/" class="flex items-center gap-2">
-      <img src="/logo-lockup.svg" alt="Warung" width="126" height="36" class="h-9 w-auto" />
+<header
+  id="site-header"
+  class="group fixed inset-x-0 top-0 z-50 border-b border-transparent transition-[background-color,border-color,box-shadow] duration-300 data-[scrolled]:border-ink/10 data-[scrolled]:bg-cream/85 data-[scrolled]:shadow-[0_1px_12px_-6px_rgb(9_9_11/0.15)] data-[scrolled]:backdrop-blur-md data-[open]:bg-cream"
+>
+  <nav aria-label="Utama" class="mx-auto flex h-18 max-w-7xl items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">
+    <a href="/" class={`-m-1 rounded-lg p-1 ${focus}`}>
+      <img src="/logo-lockup.svg" alt="Warung — laman utama" width="126" height="36" class="h-9 w-auto" />
     </a>
 
-    <div class="hidden md:flex items-center gap-8">
+    <ul class="hidden items-center gap-1 lg:flex">
       {navLinks.map((link) => (
-        <a href={link.href} class="text-sm font-medium text-neutral-600 hover:text-amber-600 transition-colors">
-          {link.label}
-        </a>
+        <li>
+          <a
+            href={link.href}
+            class={`inline-flex min-h-11 items-center rounded-full px-3.5 text-[0.9375rem] font-semibold text-ink/70 transition-colors hover:bg-ink/5 hover:text-ink ${focus}`}
+          >
+            {link.label}
+          </a>
+        </li>
       ))}
-      <a href={loginUrl} class="text-sm font-medium text-neutral-600 hover:text-amber-600 transition-colors">
+    </ul>
+
+    <div class="hidden items-center gap-2 lg:flex">
+      <a href={loginUrl} class={`inline-flex min-h-11 items-center rounded-full px-4 text-[0.9375rem] font-semibold text-ink transition-colors hover:bg-ink/5 ${focus}`}>
         Log Masuk
       </a>
       <a
         href={signupUrl()}
-        class="inline-flex items-center px-4 py-2 text-sm font-semibold text-neutral-950 bg-amber-500 hover:bg-amber-600 rounded-lg transition-colors"
+        class={`inline-flex min-h-11 items-center rounded-full bg-amber-500 px-5 text-[0.9375rem] font-bold text-ink shadow-[0_1px_0_rgb(255_255_255/0.4)_inset,0_6px_16px_-6px_rgb(217_119_6/0.6)] transition-colors hover:bg-amber-400 ${focus}`}
       >
-        Daftar Percuma
+        Mula Percuma
       </a>
     </div>
 
-    <!-- Mobile menu button -->
     <button
       id="mobile-menu-btn"
-      class="md:hidden p-2 text-neutral-600 hover:text-amber-600"
-      aria-label="Menu"
+      type="button"
+      class={`-mr-2 inline-flex size-11 items-center justify-center rounded-full text-ink hover:bg-ink/5 lg:hidden ${focus}`}
+      aria-expanded="false"
+      aria-controls="mobile-menu"
     >
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      <span class="sr-only">Buka menu</span>
+      <svg class="size-6 group-data-[open]:hidden" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </svg>
+      <svg class="hidden size-6 group-data-[open]:block" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 6l12 12M18 6L6 18" />
       </svg>
     </button>
   </nav>
 
-  <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t border-neutral-100 bg-white">
-    <div class="px-4 py-4 space-y-3">
+  <div id="mobile-menu" class="hidden border-t border-ink/10 bg-cream lg:hidden">
+    <ul class="mx-auto max-w-7xl space-y-1 px-4 py-4 sm:px-6">
       {navLinks.map((link) => (
-        <a href={link.href} class="block text-sm font-medium text-neutral-600 hover:text-amber-600">
-          {link.label}
-        </a>
+        <li>
+          <a href={link.href} class={`flex min-h-12 items-center rounded-xl px-3 text-base font-semibold text-ink hover:bg-ink/5 ${focus}`}>
+            {link.label}
+          </a>
+        </li>
       ))}
-      <a href={loginUrl} class="block text-sm font-medium text-neutral-600 hover:text-amber-600">
+    </ul>
+    <div class="mx-auto grid max-w-7xl grid-cols-2 gap-3 px-4 pb-6 sm:px-6">
+      <a href={loginUrl} class={`flex min-h-12 items-center justify-center rounded-full border-2 border-ink text-base font-bold text-ink ${focus}`}>
         Log Masuk
       </a>
-      <a
-        href={signupUrl()}
-        class="block text-center px-4 py-2 text-sm font-semibold text-neutral-950 bg-amber-500 hover:bg-amber-600 rounded-lg"
-      >
-        Daftar Percuma
+      <a href={signupUrl()} class={`flex min-h-12 items-center justify-center rounded-full bg-amber-500 text-base font-bold text-ink hover:bg-amber-400 ${focus}`}>
+        Mula Percuma
       </a>
     </div>
   </div>
 </header>
 
 <script>
-  const btn = document.getElementById('mobile-menu-btn');
-  const menu = document.getElementById('mobile-menu');
-  btn?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden');
+  const header = document.getElementById('site-header')!;
+  const btn = document.getElementById('mobile-menu-btn')!;
+  const menu = document.getElementById('mobile-menu')!;
+  const label = btn.querySelector('.sr-only')!;
+
+  const onScroll = () => header.toggleAttribute('data-scrolled', window.scrollY > 8);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const setOpen = (open: boolean) => {
+    menu.classList.toggle('hidden', !open);
+    header.toggleAttribute('data-open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    label.textContent = open ? 'Tutup menu' : 'Buka menu';
+  };
+  btn.addEventListener('click', () => setOpen(menu.classList.contains('hidden')));
+  menu.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
+      setOpen(false);
+      btn.focus();
+    }
   });
 </script>

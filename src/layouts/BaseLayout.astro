@@ -44,7 +44,13 @@ const {
 
     <title>{title}</title>
   </head>
-  <body class="font-sans text-neutral-800 bg-white antialiased">
+  <body class="font-sans text-ink bg-cream antialiased">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-3 focus:rounded-xl focus:bg-ink focus:text-white focus:font-semibold focus:outline-2 focus:outline-offset-2 focus:outline-amber-500"
+    >
+      Langkau ke kandungan utama
+    </a>
     <slot />
   </body>
 </html>

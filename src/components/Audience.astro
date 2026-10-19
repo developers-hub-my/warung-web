@@ -1,0 +1,62 @@
+---
+import { photos } from '../data/photos';
+
+const segments = [
+  {
+    photo: photos.stall,
+    label: 'Gerai',
+    title: 'Satu telefon, satu kaunter',
+    line: 'Ambil pesanan, terima bayaran dan kongsi resit melalui WhatsApp — tanpa mesin juruwang.',
+  },
+  {
+    photo: photos.restaurant,
+    label: 'Kedai Makan',
+    title: 'Meja penuh, dapur tersusun',
+    line: 'Nombor meja, makan sini atau bungkus, dan setiap pesanan terus ke paparan dapur.',
+  },
+  {
+    photo: photos.cafe,
+    label: 'Café',
+    title: 'Menu bervarian, stok terkawal',
+    line: 'Saiz dan rasa sebagai varian, jejak stok bahan, dan hidangan ikut waktu jualan.',
+  },
+];
+---
+
+<section class="py-20 sm:py-28 bg-white" aria-labelledby="audience-heading">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl">
+      <p class="text-sm font-bold uppercase tracking-[0.14em] text-amber-700">Untuk siapa</p>
+      <h2 id="audience-heading" class="mt-3 text-3xl sm:text-5xl font-extrabold tracking-tight text-ink leading-[1.05]">
+        Dibina untuk peniaga makanan Malaysia
+      </h2>
+      <p class="mt-5 text-lg text-neutral-600 leading-relaxed">
+        Dari gerai tepi jalan hingga café kejiranan — Warung menyesuaikan diri dengan cara anda berniaga.
+      </p>
+    </div>
+
+    <ul class="mt-14 grid gap-5 md:grid-cols-3" role="list">
+      {segments.map((s) => (
+        <li class="group relative aspect-[4/5] md:aspect-[3/4] overflow-hidden rounded-3xl bg-sand shadow-[0_1px_2px_rgb(9_9_11/0.06),0_12px_32px_-12px_rgb(9_9_11/0.25)]">
+          <img
+            src={s.photo.src}
+            srcset={s.photo.srcset}
+            sizes="(min-width: 1280px) 400px, (min-width: 768px) 33vw, 100vw"
+            alt={s.photo.alt}
+            width={s.photo.width}
+            height={s.photo.height}
+            loading="lazy"
+            decoding="async"
+            class="absolute inset-0 h-full w-full object-cover text-transparent transition-transform duration-700 ease-out group-hover:scale-105"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/35 to-transparent" aria-hidden="true"></div>
+          <div class="absolute inset-x-0 bottom-0 p-6 sm:p-7">
+            <span class="inline-block rounded-full bg-amber-400 px-3 py-1 text-xs font-bold text-ink">{s.label}</span>
+            <h3 class="mt-3 text-2xl font-extrabold tracking-tight text-white leading-tight">{s.title}</h3>
+            <p class="mt-2 text-[0.95rem] text-white/85 leading-relaxed">{s.line}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

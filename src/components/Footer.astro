@@ -1,47 +1,53 @@
 ---
 import { signupUrl, loginUrl } from '../signup';
+import { photos } from '../data/photos';
+
 const currentYear = new Date().getFullYear();
+// Credits live in an HTML comment only (user decision) — not shown on the page.
+const credits = [...new Map(Object.values(photos).map((p) => [p.credit.name, p.credit])).values()];
+const creditComment = `<!-- Foto (Unsplash): ${credits.map((c) => `${c.name} ${c.url}`).join('; ').replaceAll('--', '-')} -->`;
+const focus = 'rounded focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400';
+const link = `text-white/70 transition-colors hover:text-amber-400 ${focus}`;
 ---
 
-<footer id="hubungi" class="bg-neutral-900 text-neutral-400 py-12">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid md:grid-cols-3 gap-8">
-      <!-- Brand -->
-      <div>
-        <div class="flex items-center gap-2 mb-4">
-          <img src="/logo-lockup-dark.svg" alt="Warung" width="112" height="32" class="h-8 w-auto" />
-        </div>
-        <p class="text-sm leading-relaxed">
+<footer id="hubungi" class="bg-ink text-white/60">
+  <Fragment set:html={creditComment} />
+  <div class="mx-auto max-w-7xl px-4 pt-16 pb-10 sm:px-6 lg:px-8">
+    <div class="grid gap-12 md:grid-cols-12">
+      <div class="md:col-span-5">
+        <img src="/logo-lockup-dark.svg" alt="Warung" width="140" height="40" class="h-10 w-auto" />
+        <p class="mt-5 max-w-sm text-base leading-relaxed">
           Juruwang digital untuk warung anda. Sistem POS moden untuk peniaga kecil di Malaysia.
         </p>
+        <a
+          href={signupUrl()}
+          class={`mt-7 inline-flex min-h-11 items-center rounded-full bg-amber-500 px-5 text-sm font-bold text-ink transition-colors hover:bg-amber-400 ${focus}`}
+        >
+          Mula Percuma
+        </a>
       </div>
 
-      <!-- Links -->
-      <div>
-        <h4 class="text-sm font-semibold text-white mb-4">Pautan</h4>
-        <ul class="space-y-2 text-sm">
-          <li><a href="/#ciri-ciri" class="hover:text-amber-400 transition-colors">Ciri-ciri</a></li>
-          <li><a href="/#harga" class="hover:text-amber-400 transition-colors">Harga</a></li>
-          <li><a href="/panduan/" class="hover:text-amber-400 transition-colors">Panduan</a></li>
-          <li><a href={signupUrl()} class="hover:text-amber-400 transition-colors">Daftar</a></li>
-          <li><a href={loginUrl} class="hover:text-amber-400 transition-colors">Log Masuk</a></li>
+      <nav aria-labelledby="footer-pautan" class="md:col-span-3 md:col-start-7">
+        <h2 id="footer-pautan" class="text-sm font-bold text-white">Pautan</h2>
+        <ul class="mt-4 space-y-1 text-[0.9375rem]">
+          <li><a href="/#ciri" class={`inline-flex min-h-10 items-center ${link}`}>Ciri-ciri</a></li>
+          <li><a href="/#harga" class={`inline-flex min-h-10 items-center ${link}`}>Harga</a></li>
+          <li><a href="/#soalan" class={`inline-flex min-h-10 items-center ${link}`}>Soalan Lazim</a></li>
+          <li><a href="/panduan/" class={`inline-flex min-h-10 items-center ${link}`}>Panduan</a></li>
+          <li><a href={signupUrl()} class={`inline-flex min-h-10 items-center ${link}`}>Daftar</a></li>
+          <li><a href={loginUrl} class={`inline-flex min-h-10 items-center ${link}`}>Log Masuk</a></li>
         </ul>
-      </div>
+      </nav>
 
-      <!-- Contact -->
-      <div>
-        <h4 class="text-sm font-semibold text-white mb-4">Hubungi Kami</h4>
-        <ul class="space-y-2 text-sm">
-          <li>
-            <a href="mailto:hello@warung.my" class="hover:text-amber-400 transition-colors">
-              hello@warung.my
-            </a>
-          </li>
+      <div class="md:col-span-3">
+        <h2 class="text-sm font-bold text-white">Hubungi Kami</h2>
+        <ul class="mt-4 text-[0.9375rem]">
+          <li><a href="mailto:hello@warung.my" class={`inline-flex min-h-10 items-center ${link}`}>hello@warung.my</a></li>
         </ul>
       </div>
     </div>
 
-    <div class="mt-12 pt-8 border-t border-neutral-800 text-center text-sm">
+    <div class="mt-14 flex flex-col gap-3 border-t border-white/10 pt-8 text-sm sm:flex-row sm:items-center sm:justify-between">
       <p>&copy; {currentYear} Warung. Hak cipta terpelihara.</p>
     </div>
   </div>

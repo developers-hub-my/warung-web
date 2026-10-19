@@ -1,44 +1,87 @@
 ---
 const steps = [
   {
-    number: '1',
     title: 'Daftar',
-    description: 'Cipta akaun percuma dalam masa kurang 2 minit. Tiada kad kredit diperlukan.',
+    description: 'Cipta akaun percuma dalam masa kurang 2 minit. Tiada kad kredit diperlukan. Sahkan e-mel dengan satu tekan dan anda terus log masuk.',
+    img: '/panduan/img/daftar/01-borang-daftar.webp',
+    alt: 'Borang daftar akaun Warung dengan ruangan nama, e-mel dan kata laluan',
+    zoom: 'scale-[1.4] origin-[50%_55%]',
   },
   {
-    number: '2',
-    title: 'Tambah Produk',
-    description: 'Masukkan senarai menu atau produk anda. Susun mengikut kategori dan tetapkan harga.',
+    title: 'Namakan kedai, pilih menu',
+    description: 'Pilih templat yang paling hampir — Warung Mamak, Cafe, Gerai Nasi, Kedai Tomyam atau Kedai Makan. Hidangan dan harga diisi untuk anda, semuanya boleh diubah kemudian.',
+    img: '/panduan/img/setup-kedai/03-pilih-menu.webp',
+    alt: 'Pilihan menu: Warung Mamak, Cafe, Gerai Nasi, Kedai Tomyam, Kedai Makan dan Mula kosong',
+    zoom: 'scale-[1.15] origin-top',
   },
   {
-    number: '3',
-    title: 'Mula Jual',
-    description: 'Warung anda sedia untuk beroperasi. Terima pesanan dan bayaran dengan mudah.',
+    title: 'Mula jual',
+    description: 'Tekan hidangan, pilih makan sini atau bungkus, dan terima tunai, QR Pay atau kad. Resit sedia untuk dikongsi kepada pelanggan.',
+    img: '/panduan/img/jualan-pertama/06-bayaran.webp',
+    alt: 'Tetingkap pembayaran Warung: jumlah RM3.50, jenis pesanan, dan kaedah bayaran Tunai, QR Pay atau Kad',
+    zoom: 'scale-[1.35] origin-[50%_50%]',
   },
 ];
 ---
 
-<section class="py-16 sm:py-24 bg-amber-50">
+<section id="cara" class="py-20 sm:py-28 bg-white scroll-mt-20" aria-labelledby="cara-heading">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center max-w-2xl mx-auto mb-12">
-      <h2 class="text-3xl sm:text-4xl font-bold text-neutral-900">
+    <div class="max-w-2xl">
+      <p class="text-sm font-bold uppercase tracking-[0.14em] text-amber-700">Cara bermula</p>
+      <h2 id="cara-heading" class="mt-3 text-3xl sm:text-5xl font-extrabold tracking-tight text-ink leading-[1.05]">
         Mula dalam 3 langkah mudah
       </h2>
-      <p class="mt-4 text-lg text-neutral-600">
+      <p class="mt-5 text-lg text-neutral-600 leading-relaxed">
         Tiada keperluan teknikal. Sesiapa sahaja boleh bermula.
       </p>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-8">
-      {steps.map((step) => (
-        <div class="text-center">
-          <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-amber-500 text-neutral-950 text-2xl font-bold shadow-lg shadow-amber-500/25">
-            {step.number}
+    <ol class="mt-16 space-y-16 sm:space-y-24" role="list">
+      {steps.map((step, i) => (
+        <li class="grid items-center gap-8 lg:grid-cols-12 lg:gap-14">
+          <div class={`lg:col-span-5 ${i % 2 ? 'lg:order-2' : ''}`}>
+            <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-400 text-2xl font-extrabold text-ink" aria-hidden="true">
+              {i + 1}
+            </span>
+            <h3 class="mt-6 text-2xl sm:text-3xl font-extrabold tracking-tight text-ink">
+              <span class="sr-only">Langkah {i + 1}: </span>{step.title}
+            </h3>
+            <p class="mt-3 text-lg text-neutral-600 leading-relaxed">{step.description}</p>
           </div>
-          <h3 class="text-xl font-bold text-neutral-900 mb-2">{step.title}</h3>
-          <p class="text-neutral-600">{step.description}</p>
-        </div>
+
+          <figure class={`lg:col-span-7 ${i % 2 ? 'lg:order-1' : ''}`}>
+            <div class="rounded-3xl bg-sand p-3 sm:p-5">
+              <div class="overflow-hidden rounded-2xl bg-white isolate ring-1 ring-ink/10 shadow-[0_2px_4px_rgb(9_9_11/0.04),0_24px_48px_-20px_rgb(9_9_11/0.35)]">
+                <div class="flex items-center gap-1.5 border-b border-ink/5 bg-neutral-50 px-4 py-3" aria-hidden="true">
+                  <span class="h-2.5 w-2.5 rounded-full bg-neutral-300"></span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-neutral-300"></span>
+                  <span class="h-2.5 w-2.5 rounded-full bg-neutral-300"></span>
+                  <span class="ml-3 rounded-md bg-white px-3 py-0.5 text-xs text-neutral-500 ring-1 ring-ink/5">warung.pro</span>
+                </div>
+                <div class="overflow-hidden">
+                <img
+                  src={step.img}
+                  alt={step.alt}
+                  width="2560" height="1600"
+                  loading="lazy" decoding="async"
+                  class={`block w-full aspect-[16/10] object-cover bg-sand text-transparent ${step.zoom}`}
+                />
+                </div>
+              </div>
+            </div>
+          </figure>
+        </li>
       ))}
+    </ol>
+
+    <div class="mt-16 sm:mt-20 flex justify-center">
+      <a
+        href="/panduan"
+        class="group inline-flex items-center gap-2 rounded-full border border-ink/15 bg-white px-6 py-3 font-semibold text-ink transition-colors hover:border-ink/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500"
+      >
+        Baca panduan penuh
+        <svg class="h-4 w-4 transition-transform group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
     </div>
   </div>
 </section>

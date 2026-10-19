@@ -1,0 +1,90 @@
+---
+// Every answer restates a fact already published on this site (Pricing, Hero,
+// /panduan). Add a question only when its answer is already stated somewhere.
+const faqs = [
+  {
+    q: 'Perlu internet ke untuk guna Warung?',
+    a: 'Tidak semestinya. Bila internet putus, POS terus berfungsi seperti biasa. Pesanan disimpan dalam peranti dan dihantar sendiri bila internet kembali — sekali sahaja, tiada pesanan berganda.',
+  },
+  {
+    q: 'Boleh guna di telefon?',
+    a: 'Boleh. Buka warung.pro di Chrome dan tekan Pasang — ikon Warung masuk ke skrin utama. Di iPhone atau iPad, buka di Safari, tekan butang Kongsi, kemudian Add to Home Screen. Tablet dan komputer pun boleh.',
+  },
+  {
+    q: 'Berapa harganya?',
+    a: 'Pelan Percuma RM 0, Pro RM 29 sebulan dan Bisnes RM 79 sebulan. Tiada kad kredit diperlukan untuk bermula. Pelan berbayar dibayar melalui FPX (perbankan dalam talian) menerusi Billplz.',
+  },
+  {
+    q: 'Ada potongan automatik setiap bulan?',
+    a: 'Tiada. Setiap bulan dibayar sekali, seperti tambah nilai prabayar. Bulan baharu bermula selepas tarikh tamat semasa, jadi bayar awal tidak rugi. Tidak sambung? Kedai kembali ke pelan Percuma pada tarikh tamat.',
+  },
+  {
+    q: 'Berapa ramai pengguna dan cawangan?',
+    a: 'Percuma untuk 1 pengguna, Pro sehingga 3 pengguna, Bisnes pengguna tanpa had. Lebih daripada satu cawangan memerlukan pelan Bisnes.',
+  },
+  {
+    q: 'Apa jadi pada data saya kalau pelan tamat atau turun pelan?',
+    a: 'Data anda kekal. Had pelan hanya menghalang tambah baharu — turun pelan tidak memadam produk, staf atau cawangan sedia ada.',
+  },
+  {
+    q: 'Pelanggan boleh bayar dengan cara apa?',
+    a: 'Tunai, QR Pay atau Kad. Selepas bayar, resit boleh dikongsi melalui WhatsApp atau e-mel, dimuat turun sebagai PDF, atau dicetak.',
+  },
+  {
+    q: 'Macam mana nak mula?',
+    a: 'Daftar dan sahkan e-mel, taip nama kedai, kemudian pilih templat menu yang paling hampir dengan kedai anda (atau Mula kosong). Anda terus ke kaunter dan sedia menerima pesanan.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: { '@type': 'Answer', text: a },
+  })),
+};
+---
+
+<section id="soalan" class="scroll-mt-20 bg-cream py-20 sm:py-28">
+  <div class="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-12 lg:px-8">
+    <div class="lg:col-span-4">
+      <div class="lg:sticky lg:top-28">
+        <p class="text-xs font-bold uppercase tracking-[0.18em] text-amber-700">Soalan lazim</p>
+        <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-ink sm:text-5xl">
+          Ada soalan?
+        </h2>
+        <p class="mt-4 text-lg text-neutral-600">
+          Jawapan ringkas untuk perkara yang selalu ditanya. Mahu langkah demi langkah?
+        </p>
+        <a
+          href="/panduan"
+          class="mt-6 inline-flex items-center gap-2 rounded-lg font-bold text-ink underline decoration-amber-500 decoration-2 underline-offset-4 hover:decoration-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ink"
+        >
+          Baca panduan pengguna
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="space-y-3 lg:col-span-8">
+      {faqs.map(({ q, a }) => (
+        <details class="group rounded-2xl bg-white ring-1 ring-ink/5 shadow-[0_1px_2px_rgba(9,9,11,0.04)] transition-shadow open:shadow-[0_12px_32px_-12px_rgba(9,9,11,0.15)]">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-6 rounded-2xl px-6 py-5 font-bold text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600 sm:px-8 [&::-webkit-details-marker]:hidden">
+            {q}
+            <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-sand text-ink transition-transform duration-200 group-open:rotate-180 group-open:bg-amber-500">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" />
+              </svg>
+            </span>
+          </summary>
+          <p class="px-6 pb-6 leading-relaxed text-neutral-600 sm:px-8">{a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</section>

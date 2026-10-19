@@ -1,23 +1,48 @@
 ---
 import { signupUrl, loginUrl } from '../signup';
+import { photos } from '../data/photos';
 ---
 
-<section class="py-16 sm:py-24 bg-gradient-to-r from-amber-500 to-amber-600">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-    <h2 class="text-3xl sm:text-4xl font-bold text-neutral-950">
-      Mula Gunakan Warung Hari Ini
-    </h2>
-    <p class="mt-4 text-lg text-neutral-900 max-w-2xl mx-auto">
-      Daftar dalam seminit, pilih menu dari templat, dan juruwang anda sedia menerima pesanan.
-      Percuma untuk bermula — tiada kad kredit diperlukan.
-    </p>
-    <div class="mt-8">
-      <a
-        href={signupUrl()}
-        class="inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-white bg-neutral-950 hover:bg-neutral-800 rounded-xl shadow-lg transition-colors"
-      >
-        Daftar Percuma
-      </a>
+<section class="bg-white px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+  <div class="relative mx-auto max-w-6xl overflow-hidden rounded-3xl bg-ink shadow-[0_30px_60px_-20px_rgba(9,9,11,0.45)]">
+    <img
+      src={photos.cta.src}
+      srcset={photos.cta.srcset}
+      sizes="(min-width: 1152px) 1152px, 100vw"
+      alt=""
+      width={photos.cta.width}
+      height={photos.cta.height}
+      loading="lazy"
+      class="absolute inset-0 h-full w-full object-cover"
+    />
+    <div aria-hidden="true" class="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/30"></div>
+
+    <div class="relative max-w-2xl px-8 py-16 sm:px-14 sm:py-24">
+      <p class="text-xs font-bold uppercase tracking-[0.18em] text-amber-400">Mula hari ini</p>
+      <h2 class="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
+        Mula Gunakan Warung Hari Ini
+      </h2>
+      <p class="mt-5 text-lg leading-relaxed text-neutral-200">
+        Daftar dalam seminit, pilih menu dari templat, dan juruwang anda sedia menerima pesanan.
+        Percuma untuk bermula — tiada kad kredit diperlukan.
+      </p>
+      <div class="mt-10 flex flex-wrap items-center gap-4">
+        <a
+          href={signupUrl()}
+          class="inline-flex items-center justify-center gap-2 rounded-xl bg-amber-500 px-7 py-3.5 text-base font-bold text-ink shadow-lg shadow-amber-500/20 transition-colors hover:bg-amber-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-400"
+        >
+          Daftar Percuma
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6" />
+          </svg>
+        </a>
+        <a
+          href={loginUrl}
+          class="inline-flex items-center justify-center rounded-xl px-7 py-3.5 text-base font-bold text-white ring-1 ring-white/30 transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+        >
+          Log Masuk
+        </a>
+      </div>
     </div>
   </div>
 </section>
