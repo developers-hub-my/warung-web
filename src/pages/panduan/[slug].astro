@@ -1,0 +1,82 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import Screenshot from '../../components/docs/Screenshot.astro';
+import { topics, type Topic } from '../../data/panduan';
+
+export function getStaticPaths() {
+  return topics.map((topic, i) => ({
+    params: { slug: topic.slug },
+    props: { topic, n: i + 1, prev: topics[i - 1], next: topics[i + 1] },
+  }));
+}
+
+interface Props {
+  topic: Topic;
+  n: number;
+  prev?: Topic;
+  next?: Topic;
+}
+
+const { topic, n, prev, next } = Astro.props;
+---
+
+<DocsLayout title={topic.title} description={topic.summary} current={topic.slug}>
+  <nav aria-label="Laluan" class="mb-4 text-sm text-neutral-500">
+    <a href="/panduan/" class="hover:text-amber-600">Panduan</a>
+    <span aria-hidden="true"> / </span>
+    <span class="text-neutral-700">{topic.title}</span>
+  </nav>
+
+  <header class="mb-10">
+    <p class="text-sm font-semibold text-amber-600">Topik {n} daripada {topics.length}</p>
+    <h1 class="mt-1 text-3xl font-bold text-neutral-900 sm:text-4xl">{topic.title}</h1>
+    <p class="mt-3 text-lg text-neutral-600">{topic.summary}</p>
+  </header>
+
+  <ol class="space-y-14">
+    {topic.steps.map((step, i) => (
+      <li id={`langkah-${i + 1}`} class="scroll-mt-24">
+        <div class="mb-4 flex items-start gap-4">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-500 font-bold text-neutral-900" aria-hidden="true">{i + 1}</span>
+          <div class="min-w-0">
+            <h2 class="text-xl font-bold text-neutral-900"><span class="sr-only">Langkah {i + 1}: </span>{step.title}</h2>
+            <p class="doc-prose mt-1 text-neutral-700" set:html={step.body} />
+          </div>
+        </div>
+        <Screenshot src={step.img} alt={step.alt} />
+        {step.tip && (
+          <aside class="mt-4 flex gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-neutral-800">
+            <span class="shrink-0 font-bold text-amber-700">Tip</span>
+            <p class="doc-prose" set:html={step.tip} />
+          </aside>
+        )}
+      </li>
+    ))}
+  </ol>
+
+  <nav aria-label="Topik sebelum dan seterusnya" class="mt-16 grid gap-4 border-t border-neutral-200 pt-8 sm:grid-cols-2">
+    {prev ? (
+      <a href={`/panduan/${prev.slug}/`} class="rounded-xl border border-neutral-200 p-4 transition hover:border-amber-400 hover:bg-amber-50">
+        <span class="text-xs font-medium text-neutral-500">← Sebelum</span>
+        <span class="mt-1 block font-semibold text-neutral-900">{prev.title}</span>
+      </a>
+    ) : (
+      <a href="/panduan/" class="rounded-xl border border-neutral-200 p-4 transition hover:border-amber-400 hover:bg-amber-50">
+        <span class="text-xs font-medium text-neutral-500">← Sebelum</span>
+        <span class="mt-1 block font-semibold text-neutral-900">Mula di sini</span>
+      </a>
+    )}
+    {next && (
+      <a href={`/panduan/${next.slug}/`} class="rounded-xl border border-neutral-200 p-4 text-right transition hover:border-amber-400 hover:bg-amber-50 sm:col-start-2">
+        <span class="text-xs font-medium text-neutral-500">Seterusnya →</span>
+        <span class="mt-1 block font-semibold text-neutral-900">{next.title}</span>
+      </a>
+    )}
+  </nav>
+</DocsLayout>
+
+<style is:global>
+  .doc-prose a { color: #b45309; text-decoration: underline; text-underline-offset: 2px; }
+  .doc-prose a:hover { color: #92400e; }
+  .doc-prose strong { font-weight: 600; color: #171717; }
+</style>

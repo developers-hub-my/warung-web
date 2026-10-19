@@ -1,0 +1,37 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+import { topics } from '../../data/panduan';
+import { signupUrl } from '../../signup';
+
+const totalSteps = topics.reduce((n, t) => n + t.steps.length, 0);
+---
+
+<DocsLayout title="Panduan" description="Panduan langkah demi langkah menggunakan Warung: daftar, setup kedai, jual di POS, menu, stok, meja, staf, resit dan pelan.">
+  <header class="mb-10">
+    <p class="text-sm font-semibold text-amber-600">Panduan pengguna</p>
+    <h1 class="mt-1 text-3xl font-bold text-neutral-900 sm:text-4xl">Cara guna Warung</h1>
+    <p class="mt-3 max-w-2xl text-lg text-neutral-600">
+      Dari daftar akaun sehingga jualan pertama, kemudian urus menu, stok, staf dan cawangan.
+      {totalSteps} langkah, setiap satu dengan gambar sebenar — tekan gambar untuk besarkan.
+    </p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href="/panduan/daftar/" class="inline-flex items-center rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-neutral-900 transition-colors hover:bg-amber-400">Mula dari langkah 1</a>
+      <a href={signupUrl()} class="inline-flex items-center rounded-lg border border-neutral-300 px-5 py-2.5 text-sm font-semibold text-neutral-700 transition-colors hover:border-amber-400 hover:text-amber-700">Daftar Percuma</a>
+    </div>
+  </header>
+
+  <ol class="grid gap-4 sm:grid-cols-2">
+    {topics.map((t, i) => (
+      <li>
+        <a href={`/panduan/${t.slug}/`} class="group flex h-full gap-4 rounded-xl border border-neutral-200 p-5 transition hover:border-amber-400 hover:bg-amber-50">
+          <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-100 font-bold text-amber-800 group-hover:bg-amber-500 group-hover:text-neutral-900">{i + 1}</span>
+          <span class="min-w-0">
+            <span class="block font-semibold text-neutral-900">{t.title}</span>
+            <span class="mt-1 block text-sm text-neutral-600">{t.summary}</span>
+            <span class="mt-2 block text-xs text-neutral-500">{t.steps.length} langkah</span>
+          </span>
+        </a>
+      </li>
+    ))}
+  </ol>
+</DocsLayout>
