@@ -1,18 +1,23 @@
+---
+import { signupUrl, loginUrl } from '../signup';
+---
+
 <section class="py-16 sm:py-24 bg-gradient-to-r from-amber-500 to-amber-600">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
     <h2 class="text-3xl sm:text-4xl font-bold text-white">
       Mula Gunakan Warung Hari Ini
     </h2>
     <p class="mt-4 text-lg text-amber-100 max-w-2xl mx-auto">
-      Kami sedang membina sesuatu yang hebat untuk warung anda.
-      Nantikan pelancaran tidak lama lagi.
+      Daftar dalam seminit, pilih menu dari templat, dan juruwang anda sedia menerima pesanan.
+      Percuma untuk bermula — tiada kad kredit diperlukan.
     </p>
     <div class="mt-8">
-      <span
-        class="inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-amber-600 bg-white/80 rounded-xl shadow-lg cursor-default"
+      <a
+        href={signupUrl()}
+        class="inline-flex items-center justify-center px-8 py-3 text-base font-semibold text-amber-600 bg-white hover:bg-amber-50 rounded-xl shadow-lg transition-colors"
       >
-        Akan Datang
-      </span>
+        Daftar Percuma
+      </a>
     </div>
   </div>
 </section>

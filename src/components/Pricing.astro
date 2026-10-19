@@ -1,4 +1,6 @@
 ---
+import { signupUrl } from '../signup';
+
 const plans = [
   {
     name: 'Percuma',
@@ -8,12 +10,13 @@ const plans = [
     features: [
       '1 pengguna',
       'Sehingga 50 produk',
+      '1 cawangan',
       'Laporan asas',
       'Berfungsi offline',
       'Pasang di telefon (PWA)',
     ],
-    cta: 'Akan Datang',
-    href: '#',
+    cta: 'Mula Percuma',
+    href: signupUrl('free'),
     highlighted: false,
   },
   {
@@ -24,13 +27,14 @@ const plans = [
     features: [
       'Sehingga 3 pengguna',
       'Produk tanpa had',
+      '1 cawangan',
       'Laporan terperinci',
       'Berfungsi offline',
       'Pelbagai kaedah bayaran',
       'Sokongan keutamaan',
     ],
-    cta: 'Akan Datang',
-    href: '#',
+    cta: 'Pilih Pro',
+    href: signupUrl('pro'),
     highlighted: true,
   },
   {
@@ -47,8 +51,8 @@ const plans = [
       'Sokongan dedikasi',
       'Pengurusan cawangan',
     ],
-    cta: 'Hubungi Kami',
-    href: '#hubungi',
+    cta: 'Pilih Bisnes',
+    href: signupUrl('business'),
     highlighted: false,
   },
 ];
