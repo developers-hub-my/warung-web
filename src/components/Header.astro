@@ -1,4 +1,5 @@
 ---
+import { signupUrl, loginUrl } from '../signup';
 const navLinks = [
   { href: '#ciri-ciri', label: 'Ciri-ciri' },
   { href: '#harga', label: 'Harga' },
@@ -19,11 +20,15 @@ const navLinks = [
           {link.label}
         </a>
       ))}
-      <span
-        class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-amber-500/70 rounded-lg cursor-default"
+      <a href={loginUrl} class="text-sm font-medium text-neutral-600 hover:text-amber-600 transition-colors">
+        Log Masuk
+      </a>
+      <a
+        href={signupUrl()}
+        class="inline-flex items-center px-4 py-2 text-sm font-semibold text-white bg-amber-500 hover:bg-amber-600 rounded-lg transition-colors"
       >
-        Akan Datang
-      </span>
+        Daftar Percuma
+      </a>
     </div>
 
     <!-- Mobile menu button -->
@@ -46,11 +51,15 @@ const navLinks = [
           {link.label}
         </a>
       ))}
-      <span
-        class="block text-center px-4 py-2 text-sm font-semibold text-white bg-amber-500/70 rounded-lg cursor-default"
+      <a href={loginUrl} class="block text-sm font-medium text-neutral-600 hover:text-amber-600">
+        Log Masuk
+      </a>
+      <a
+        href={signupUrl()}
+        class="block text-center px-4 py-2 text-sm font-semibold text-white bg-amber-500 hover:bg-amber-600 rounded-lg"
       >
-        Akan Datang
-      </span>
+        Daftar Percuma
+      </a>
     </div>
   </div>
 </header>
