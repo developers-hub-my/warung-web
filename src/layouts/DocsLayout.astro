@@ -1,0 +1,65 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { topics } from '../data/panduan';
+
+interface Props {
+  title: string;
+  description: string;
+  current?: string; // topic slug; undefined on the index
+}
+
+const { title, description, current } = Astro.props;
+const here = topics.find((t) => t.slug === current);
+---
+
+<BaseLayout title={`${title} — Panduan Warung`} description={description}>
+  <Header />
+  <div class="mx-auto max-w-6xl px-4 pt-20 pb-16 sm:px-6 lg:px-8">
+    <div class="lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-10">
+      <aside class="lg:sticky lg:top-24 lg:self-start">
+        <!-- Phones: the topic list folds away behind one native <details>. -->
+        <details class="group rounded-xl border border-neutral-200 bg-white lg:hidden">
+          <summary class="flex cursor-pointer list-none items-center justify-between px-4 py-3 text-sm font-semibold text-neutral-900">
+            <span>{here ? here.title : 'Semua topik'}</span>
+            <svg class="h-5 w-5 text-neutral-500 transition group-open:rotate-180" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+          </summary>
+          <nav aria-label="Topik panduan (mudah alih)" class="border-t border-neutral-100 px-2 py-2">
+            <ol class="space-y-0.5 text-sm">
+              <li><a href="/panduan/" class:list={['block rounded-lg px-3 py-2', !current ? 'bg-amber-500 font-semibold text-neutral-900' : 'text-neutral-600 hover:bg-amber-50']}>Mula di sini</a></li>
+              {topics.map((t, i) => (
+                <li>
+                  <a href={`/panduan/${t.slug}/`} aria-current={t.slug === current ? 'page' : undefined}
+                    class:list={['flex gap-2 rounded-lg px-3 py-2', t.slug === current ? 'bg-amber-500 font-semibold text-neutral-900' : 'text-neutral-600 hover:bg-amber-50']}>
+                    <span class="w-5 shrink-0 tabular-nums opacity-60">{i + 1}.</span>{t.title}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </details>
+
+        <nav aria-label="Topik panduan" class="hidden lg:block">
+          <p class="mb-3 px-3 text-xs font-semibold tracking-wider text-neutral-500 uppercase">Panduan</p>
+          <ol class="space-y-0.5 text-sm">
+            <li><a href="/panduan/" aria-current={!current ? 'page' : undefined} class:list={['block rounded-lg px-3 py-2', !current ? 'bg-amber-500 font-semibold text-neutral-900' : 'text-neutral-600 hover:bg-amber-50 hover:text-neutral-900']}>Mula di sini</a></li>
+            {topics.map((t, i) => (
+              <li>
+                <a href={`/panduan/${t.slug}/`} aria-current={t.slug === current ? 'page' : undefined}
+                  class:list={['flex gap-2 rounded-lg px-3 py-2', t.slug === current ? 'bg-amber-500 font-semibold text-neutral-900' : 'text-neutral-600 hover:bg-amber-50 hover:text-neutral-900']}>
+                  <span class="w-5 shrink-0 tabular-nums opacity-60">{i + 1}.</span>{t.title}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </aside>
+
+      <main class="mt-8 min-w-0 lg:mt-0">
+        <slot />
+      </main>
+    </div>
+  </div>
+  <Footer />
+</BaseLayout>

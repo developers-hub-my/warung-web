@@ -1,0 +1,317 @@
+---
+// A step screenshot. Click/tap opens a zoomable lightbox (one shared <dialog>
+// per page, created by the script below on first use).
+import sharp from 'sharp';
+import { join } from 'node:path';
+
+interface Props {
+  src: string; // public path, e.g. /panduan/img/daftar/01-borang-daftar.webp
+  alt: string;
+}
+
+const { src, alt } = Astro.props;
+// Real dimensions at build time, so the page never shifts as images load.
+const { width = 2560, height = 1600 } = await sharp(join(process.cwd(), 'public', src)).metadata();
+---
+
+<button
+  type="button"
+  class="doc-shot group relative block w-full overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50 shadow-sm cursor-zoom-in focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-400/60"
+  data-full={src}
+  data-alt={alt}
+  data-w={width}
+  data-h={height}
+  aria-label={`Besarkan gambar: ${alt}`}
+>
+  <img src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" class="block h-auto w-full" />
+  <span
+    class="pointer-events-none absolute right-3 bottom-3 inline-flex items-center gap-1 rounded-full bg-neutral-900/75 px-3 py-1 text-xs font-medium text-white opacity-90 transition group-hover:opacity-100"
+    aria-hidden="true"
+  >
+    <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3M11 8v6M8 11h6" stroke-linecap="round" /></svg>
+    Besarkan
+  </span>
+</button>
+
+<script>
+  // Zoomable lightbox: wheel / trackpad pinch / touch pinch zoom around the
+  // pointer, drag to pan, double-click or double-tap toggles fit ↔ 2×,
+  // +/−/0 keys and buttons, Esc or backdrop closes (native <dialog>).
+  const MIN = 1;
+  const MAX = 6;
+
+  let dialog: HTMLDialogElement | null = null;
+  let stage: HTMLDivElement;
+  let img: HTMLImageElement;
+  let scale = 1, x = 0, y = 0;
+  let frame = 0;
+  const pointers = new Map<number, { x: number; y: number }>();
+  let pinch: { dist: number; scale: number } | null = null;
+  let lastTap = 0;
+  let moved = false;
+
+  const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+
+  function bound() {
+    // Keep the image from being dragged off screen.
+    const w = img.offsetWidth * scale;
+    const h = img.offsetHeight * scale;
+    const mx = Math.max(0, (w - stage.clientWidth) / 2);
+    const my = Math.max(0, (h - stage.clientHeight) / 2);
+    x = clamp(x, -mx, mx);
+    y = clamp(y, -my, my);
+  }
+
+  function render(animate: boolean) {
+    bound();
+    img.style.transition = animate ? 'transform 220ms cubic-bezier(.2,.7,.2,1)' : 'none';
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => {
+      img.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
+      img.style.cursor = scale > 1 ? 'grab' : 'zoom-in';
+      dialog!.querySelector<HTMLElement>('[data-zoom-level]')!.textContent = `${Math.round(scale * 100)}%`;
+    });
+  }
+
+  // Zoom to `next`, keeping the point (cx, cy) — client coordinates — still.
+  function zoomAt(next: number, cx: number, cy: number, animate: boolean) {
+    next = clamp(next, MIN, MAX);
+    const r = stage.getBoundingClientRect();
+    const px = cx - (r.left + r.width / 2);
+    const py = cy - (r.top + r.height / 2);
+    x = px - ((px - x) * next) / scale;
+    y = py - ((py - y) * next) / scale;
+    scale = next;
+    if (scale === 1) x = y = 0;
+    render(animate);
+  }
+
+  const centre = () => {
+    const r = stage.getBoundingClientRect();
+    return [r.left + r.width / 2, r.top + r.height / 2] as const;
+  };
+
+  function toggle(cx: number, cy: number) {
+    if (scale > 1) zoomAt(1, cx, cy, true);
+    else zoomAt(2, cx, cy, true);
+  }
+
+  function build() {
+    dialog = document.createElement('dialog');
+    dialog.className = 'doc-lightbox';
+    dialog.setAttribute('aria-label', 'Gambar dibesarkan');
+    dialog.innerHTML = `
+      <div class="doc-lb-stage"><img alt="" draggable="false" /></div>
+      <div class="doc-lb-bar" role="toolbar" aria-label="Kawalan zum">
+        <button type="button" data-act="out" aria-label="Zum keluar">−</button>
+        <span data-zoom-level aria-live="polite">100%</span>
+        <button type="button" data-act="in" aria-label="Zum masuk">+</button>
+        <button type="button" data-act="reset" aria-label="Saiz asal">Muat</button>
+        <button type="button" data-act="close" aria-label="Tutup">✕</button>
+      </div>
+      <p class="doc-lb-hint">Cubit atau skrol untuk zum · seret untuk alih · Esc untuk tutup</p>`;
+    document.body.append(dialog);
+    stage = dialog.querySelector('.doc-lb-stage')!;
+    img = stage.querySelector('img')!;
+
+    dialog.addEventListener('click', (e) => {
+      const act = (e.target as HTMLElement).closest<HTMLElement>('[data-act]')?.dataset.act;
+      const [cx, cy] = centre();
+      if (act === 'in') zoomAt(scale * 1.5, cx, cy, true);
+      else if (act === 'out') zoomAt(scale / 1.5, cx, cy, true);
+      else if (act === 'reset') zoomAt(1, cx, cy, true);
+      else if (act === 'close') dialog!.close();
+      // Backdrop click: outside the image. Checked by position, because pointer
+      // capture retargets clicks on the image to the stage.
+      else if ((e.target === dialog || e.target === stage) && !moved) {
+        const r = img.getBoundingClientRect();
+        const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+        if (!inside) dialog!.close();
+      }
+    });
+
+    dialog.addEventListener('close', () => {
+      document.documentElement.style.overflow = '';
+      opener?.focus();
+    });
+
+    dialog.addEventListener('keydown', (e) => {
+      const [cx, cy] = centre();
+      const step = 60;
+      if (e.key === '+' || e.key === '=') zoomAt(scale * 1.5, cx, cy, true);
+      else if (e.key === '-' || e.key === '_') zoomAt(scale / 1.5, cx, cy, true);
+      else if (e.key === '0') zoomAt(1, cx, cy, true);
+      else if (e.key === 'ArrowLeft' && scale > 1) { x += step; render(true); }
+      else if (e.key === 'ArrowRight' && scale > 1) { x -= step; render(true); }
+      else if (e.key === 'ArrowUp' && scale > 1) { y += step; render(true); }
+      else if (e.key === 'ArrowDown' && scale > 1) { y -= step; render(true); }
+      else return;
+      e.preventDefault();
+    });
+
+    // Wheel and trackpad pinch (ctrlKey) — smooth, proportional to delta.
+    stage.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const k = e.ctrlKey ? 0.01 : 0.002;
+      zoomAt(scale * Math.exp(-e.deltaY * k), e.clientX, e.clientY, false);
+    }, { passive: false });
+
+    stage.addEventListener('pointerdown', (e) => {
+      stage.setPointerCapture(e.pointerId);
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      moved = false;
+      if (pointers.size === 2) {
+        const [a, b] = [...pointers.values()];
+        pinch = { dist: Math.hypot(a.x - b.x, a.y - b.y), scale };
+      }
+      if (scale > 1) img.style.cursor = 'grabbing';
+    });
+
+    stage.addEventListener('pointermove', (e) => {
+      const prev = pointers.get(e.pointerId);
+      if (!prev) return;
+      const cur = { x: e.clientX, y: e.clientY };
+      pointers.set(e.pointerId, cur);
+      if (pointers.size === 2 && pinch) {
+        const [a, b] = [...pointers.values()];
+        const dist = Math.hypot(a.x - b.x, a.y - b.y);
+        zoomAt(pinch.scale * (dist / pinch.dist), (a.x + b.x) / 2, (a.y + b.y) / 2, false);
+        moved = true;
+      } else if (pointers.size === 1 && scale > 1) {
+        x += cur.x - prev.x;
+        y += cur.y - prev.y;
+        if (Math.abs(cur.x - prev.x) + Math.abs(cur.y - prev.y) > 1) moved = true;
+        render(false);
+      }
+    });
+
+    const up = (e: PointerEvent) => {
+      if (!pointers.delete(e.pointerId)) return;
+      if (pointers.size < 2) pinch = null;
+      render(false);
+      // Double-tap on touch (dblclick is unreliable with touch-action: none).
+      if (e.pointerType === 'touch' && !moved && pointers.size === 0) {
+        const now = Date.now();
+        if (now - lastTap < 300) { toggle(e.clientX, e.clientY); lastTap = 0; }
+        else lastTap = now;
+      }
+    };
+    stage.addEventListener('pointerup', up);
+    stage.addEventListener('pointercancel', up);
+
+    stage.addEventListener('dblclick', (e) => {
+      if ((e as PointerEvent).pointerType === 'touch') return;
+      toggle(e.clientX, e.clientY);
+    });
+  }
+
+  let opener: HTMLElement | null = null;
+
+  function open(btn: HTMLElement) {
+    if (!dialog) build();
+    opener = btn;
+    const { full = '', alt = '', w = '0', h = '0' } = btn.dataset;
+    img.src = full;
+    img.alt = alt;
+    img.width = Number(w);
+    img.height = Number(h);
+    scale = 1; x = y = 0;
+    img.style.transition = 'none';
+    img.style.transform = 'none';
+    document.documentElement.style.overflow = 'hidden';
+    dialog!.showModal();
+    render(false);
+    dialog!.querySelector<HTMLElement>('[data-act="in"]')!.focus();
+  }
+
+  document.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLElement>('.doc-shot');
+    if (btn) open(btn);
+  });
+</script>
+
+<style is:global>
+  .doc-lightbox {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: #171717;
+    color: #fff;
+    overscroll-behavior: contain;
+  }
+  .doc-lightbox::backdrop { background: transparent; }
+  .doc-lightbox[open] { animation: doc-lb-in 180ms ease-out; }
+  @keyframes doc-lb-in { from { opacity: 0; } to { opacity: 1; } }
+  .doc-lb-stage {
+    position: absolute;
+    inset: 0 0 4.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .doc-lb-stage img {
+    max-width: calc(100vw - 2rem);
+    max-height: calc(100dvh - 6.5rem);
+    width: auto;
+    height: auto;
+    transform-origin: center center;
+    will-change: transform;
+    border-radius: 0.5rem;
+    box-shadow: 0 20px 60px rgb(0 0 0 / 0.5);
+  }
+  .doc-lb-bar {
+    position: absolute;
+    left: 50%;
+    bottom: 1.75rem;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.375rem;
+    border-radius: 9999px;
+    background: rgb(255 255 255 / 0.1);
+    backdrop-filter: blur(8px);
+  }
+  .doc-lb-bar button {
+    min-width: 2.75rem;
+    height: 2.75rem;
+    padding: 0 0.75rem;
+    border-radius: 9999px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #fff;
+    cursor: pointer;
+  }
+  .doc-lb-bar button[data-act='reset'] { font-size: 0.875rem; }
+  .doc-lb-bar button:hover { background: rgb(255 255 255 / 0.15); }
+  .doc-lb-bar button:focus-visible { outline: 3px solid #f59e0b; outline-offset: 1px; }
+  .doc-lb-bar [data-zoom-level] {
+    min-width: 3.5rem;
+    text-align: center;
+    font-size: 0.875rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .doc-lb-hint {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.25rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: rgb(255 255 255 / 0.6);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .doc-lightbox[open] { animation: none; }
+    .doc-lb-stage img { transition: none !important; }
+  }
+</style>
