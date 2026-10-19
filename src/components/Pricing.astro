@@ -75,27 +75,27 @@ const plans = [
           class:list={[
             'rounded-2xl p-8 flex flex-col',
             plan.highlighted
-              ? 'bg-amber-500 text-white shadow-2xl shadow-amber-500/25 ring-2 ring-amber-500 scale-105'
+              ? 'bg-amber-500 text-neutral-950 shadow-2xl shadow-amber-500/25 ring-2 ring-amber-500 scale-105'
               : 'bg-white border border-neutral-200',
           ]}
         >
           <h3 class:list={[
             'text-lg font-bold',
-            plan.highlighted ? 'text-white' : 'text-neutral-900',
+            plan.highlighted ? 'text-neutral-950' : 'text-neutral-900',
           ]}>{plan.name}</h3>
           <div class="mt-4 flex items-baseline gap-1">
             <span class:list={[
               'text-4xl font-extrabold',
-              plan.highlighted ? 'text-white' : 'text-neutral-900',
+              plan.highlighted ? 'text-neutral-950' : 'text-neutral-900',
             ]}>{plan.price}</span>
             <span class:list={[
               'text-sm',
-              plan.highlighted ? 'text-amber-100' : 'text-neutral-500',
+              plan.highlighted ? 'text-neutral-800' : 'text-neutral-500',
             ]}>{plan.period}</span>
           </div>
           <p class:list={[
             'mt-2 text-sm',
-            plan.highlighted ? 'text-amber-100' : 'text-neutral-600',
+            plan.highlighted ? 'text-neutral-800' : 'text-neutral-600',
           ]}>{plan.description}</p>
 
           <ul class="mt-6 space-y-3 flex-1">
@@ -103,7 +103,7 @@ const plans = [
               <li class="flex items-start gap-2 text-sm">
                 <svg class:list={[
                   'w-5 h-5 shrink-0 mt-0.5',
-                  plan.highlighted ? 'text-amber-100' : 'text-amber-500',
+                  plan.highlighted ? 'text-neutral-950' : 'text-amber-500',
                 ]} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
@@ -117,8 +117,8 @@ const plans = [
               class:list={[
                 'mt-8 block text-center px-6 py-3 text-sm font-semibold rounded-xl cursor-default opacity-70',
                 plan.highlighted
-                  ? 'bg-white text-amber-600'
-                  : 'bg-amber-500 text-white',
+                  ? 'bg-neutral-950 text-white'
+                  : 'bg-amber-500 text-neutral-950',
               ]}
             >
               {plan.cta}
@@ -129,8 +129,8 @@ const plans = [
               class:list={[
                 'mt-8 block text-center px-6 py-3 text-sm font-semibold rounded-xl transition-all',
                 plan.highlighted
-                  ? 'bg-white text-amber-600 hover:bg-amber-50'
-                  : 'bg-amber-500 text-white hover:bg-amber-600',
+                  ? 'bg-neutral-950 text-white hover:bg-neutral-800'
+                  : 'bg-amber-500 text-neutral-950 hover:bg-amber-600',
               ]}
             >
               {plan.cta}
