@@ -29,7 +29,7 @@ export const topics: Topic[] = [
     steps: [
       {
         title: 'Buka borang daftar',
-        body: 'Pergi ke <a href="https://warung.pro/register">warung.pro/register</a> atau tekan <strong>Daftar Percuma</strong> di laman ini. Tiada kad kredit diperlukan.',
+        body: 'Pergi ke <a href="https://pos.warung.my/register">pos.warung.my/register</a> atau tekan <strong>Daftar Percuma</strong> di laman ini. Tiada kad kredit diperlukan.',
         img: img('daftar', '01-borang-daftar'),
         alt: 'Borang daftar akaun Warung dengan ruangan nama, e-mel dan kata laluan',
       },
@@ -418,7 +418,7 @@ export const topics: Topic[] = [
     steps: [
       {
         title: 'Tekan Pasang',
-        body: 'Buka <strong>warung.pro</strong> di Chrome. Bila bar <strong>Pasang Warung untuk pengalaman lebih baik</strong> muncul, tekan <strong>Pasang</strong>. Ikon Warung masuk ke skrin utama.',
+        body: 'Buka <strong>pos.warung.my</strong> di Chrome. Bila bar <strong>Pasang Warung untuk pengalaman lebih baik</strong> muncul, tekan <strong>Pasang</strong>. Ikon Warung masuk ke skrin utama.',
         img: img('pwa-offline', '01-pasang-app'),
         alt: 'Bar Pasang Warung di atas skrin POS',
         tip: 'iPhone atau iPad: buka di Safari, tekan butang Kongsi, kemudian <strong>Add to Home Screen</strong>.',
